@@ -69,19 +69,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         
         // Устанавливаем шрифт для основного текста
         HFONT hFont;
-        hFont = CreateFont(36, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, 
+        hFont = CreateFontW(36, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, 
                           DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
                           CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, 
                           VARIABLE_PITCH, L"Arial");
-        SendMessage(hDaysLabel, WM_SETFONT, (WPARAM)hFont, TRUE);
+        SendMessageW(hDaysLabel, WM_SETFONT, (WPARAM)hFont, TRUE);
         
         // Шрифт для даты
         HFONT hSmallFont;
-        hSmallFont = CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, 
+        hSmallFont = CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, 
                                DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
                                CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, 
                                VARIABLE_PITCH, L"Arial");
-        SendMessage(hDateLabel, WM_SETFONT, (WPARAM)hSmallFont, TRUE);
+        SendMessageW(hDateLabel, WM_SETFONT, (WPARAM)hSmallFont, TRUE);
         break;
         
     case WM_TIMER:
@@ -91,7 +91,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             std::wstring daysText;
             
             if (days == 0) {
-                daysText = L"С НОВЫМ ГОДОМ! 🎄";
+                daysText = L"С НОВЫМ ГОДОМ!";
             } else {
                 daysText = std::to_wstring(days) + L" дней";
             }
@@ -129,7 +129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         break;
         
     default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
+        return DefWindowProcW(hWnd, message, wParam, lParam);
     }
     return 0;
 }
@@ -144,17 +144,17 @@ ATOM RegisterWindowClass(HINSTANCE hInstance) {
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hIcon = LoadIconW(NULL, MAKEINTRESOURCEW(32512)); // IDI_APPLICATION
+    wcex.hCursor = LoadCursorW(NULL, MAKEINTRESOURCEW(32512)); // IDC_ARROW
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = szWindowClass;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+    wcex.hIconSm = LoadIconW(NULL, MAKEINTRESOURCEW(32512)); // IDI_APPLICATION
     
     return RegisterClassExW(&wcex);
 }
 
-// Точка входа
+// Точка входа - ИСПРАВЛЕННАЯ ВЕРСИЯ
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     hInst = hInstance;
     
